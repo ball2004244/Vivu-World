@@ -40,7 +40,7 @@ class Colors():
     GOLDENROD = (218, 165, 32)
     CERULEAN = (0, 123, 167)
     MUSTARD = (225, 173, 1)
-    TEAL = (0,128 , 128)
+    TEAL = (0,128, 128)
 
 class FontType():
     FONT1 = pg.font.SysFont('Cambria', 50)
