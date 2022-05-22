@@ -6,54 +6,37 @@ from setup import Screen, Colors, Screen, fps_clock, update_screen, ScreenWidth,
 
 pg.init()
 
-'''This Button contain 2 layers rectangles, named "top" and "bot"'''
+class MainChar():
+    def __init__(self):
+        self.image = pg.image.load(r'character\main_character.png')
+        self.image = pg.transform.scale(self.image, (700, 800))
 
-
-class Button():
-    def __init__(self, text, x, y, width, height):
-        self.top_size = (x, y, width, height)
-        self.bot_size = (x + width // 100, y + y // 30, width, height)
-
-        self.text_surf = pg.font.Font.render(
-            FontType.FONT1, text, True, Colors.WHITE)
-        self.text_rect = self.text_surf.get_rect(
-            center=(x + width // 2, y + height // 2))
-
-        self.pressed = False
-        pass
+        self.rect = self.image.get_rect(bottomleft = (-100, ScreenHeight + 50))
+        pass 
 
     def draw(self):
-        self.bot_rect = pg.draw.rect(
-            Screen, Colors.BLACK, self.bot_size)
-        self.top_rect = pg.draw.rect(
-            Screen, Colors.MIDNIGHT_BLUE, self.top_size)
-        Screen.blit(self.text_surf, self.text_rect)
+        Screen.blit(self.image, self.rect)
         pass
-
-    def check_click(self):
-        mouse_pos = pg.mouse.get_pos()
-        if self.top_rect.collidepoint(mouse_pos):
-            self.top_color = Colors.RED
-            self.pressed = True
-            print('Click')
-        else:
-            self.pressed = False
-
-        if self.pressed:
-            # do something when hit a button
-            pass
+    def update(self):
         pass
     pass
 
+class TextBox():
+    def __init__(self):
+        pass 
+    def draw(self):
+        pass 
+    def update():
+        pass 
+    pass
 
 # init variables for game loop
-button1 = Button('Click', 200, 100, 210, 70)
+player = MainChar()
 
 while True:
     # draw
     Screen.fill(Colors.WHITE)
-    button1.draw()
-
+    player.draw()
     # update
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -61,7 +44,7 @@ while True:
             pg.quit()
             sys.exit()
         if event.type == pg.MOUSEBUTTONUP:
-            button1.check_click()
+            pass
 
     fps_clock()
     update_screen()

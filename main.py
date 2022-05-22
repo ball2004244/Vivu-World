@@ -1,9 +1,7 @@
 # Import modules
 import pygame as pg
-import sys
-import shutil
 from pygame.locals import *
-from setup import fps_clock, update_screen, Screen, Colors
+from setup import fps_clock, update_screen, quit_game, Screen, Colors
 from theme.theme0.t0_home import ThemeZero
 pg.init()
 
@@ -18,10 +16,7 @@ while True:
     # update
     for event in pg.event.get():
         if event.type == pg.QUIT:
-            shutil.rmtree(r'__pycache__')  # delete cache folder
-            shutil.rmtree(r'theme\theme0\__pycache__')
-            pg.quit()
-            sys.exit()
+            quit_game()
         if event.type == pg.MOUSEBUTTONUP:
             theme0.check_click()
 

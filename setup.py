@@ -1,4 +1,6 @@
 import pygame as pg
+import sys
+import shutil
 from pygame.locals import *
 pg.init()
 
@@ -66,3 +68,9 @@ def fps_clock():
 
 def update_screen():
     pg.display.update()
+
+def quit_game():
+    shutil.rmtree(r'__pycache__')  # delete cache folders
+    shutil.rmtree(r'theme\theme0\__pycache__')
+    pg.quit()
+    sys.exit()
