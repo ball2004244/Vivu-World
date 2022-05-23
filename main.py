@@ -3,10 +3,12 @@ import pygame as pg
 from pygame.locals import *
 from setup import fps_clock, update_screen, quit_game, Screen, Colors
 from theme.theme0.t0_home import ThemeZero
+from character.main_character import MainChar
 pg.init()
 
 # Initialize variable for Main function
 theme0 = ThemeZero()
+player = MainChar()
 # Main function
 while True:
     # draw
