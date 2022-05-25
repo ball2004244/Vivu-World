@@ -3,59 +3,43 @@ import pygame as pg
 import sys
 import shutil
 from setup import Screen, Colors, Screen, fps_clock, update_screen, ScreenWidth, ScreenHeight, FontType
-
+from mission import *
 pg.init()
 
-class MainChar():
+class FlappyBirdTheme():
     def __init__(self):
-        self.image = pg.image.load(r'character\maincharacter.png')
-        self.image = pg.transform.scale(self.image, (300, 445))
-
-        self.rect = self.image.get_rect(bottomleft = (50, ScreenHeight - 307))
-        pass 
-
-    def draw(self):
-        Screen.blit(self.image, self.rect)
+        self.background = pg.image.load(r'mission\flappybird\background.png')
+        self.background = pg.transform.scale(self.background, (ScreenWidth, ScreenHeight))
+        self.background_rect = self.background.get_rect(topleft = (0, 0))
+        
+        self.ground = pg.image.load(r'mission\flappybird\ground.png')
+        self.ground = pg.transform.scale(self.ground, (ScreenWidth, ScreenHeight // 5))
+        self.ground_rect = self.ground.get_rect(bottomleft = (0, ScreenHeight))
         pass
+
+    def draw(self, ground_x):
+        self.ground_rect = self.ground.get_rect(bottomleft = (ground_x, ScreenHeight))
+        Screen.blit(self.background, self.background_rect)
+        Screen.blit(self.ground, self.ground_rect)
+        pass
+
     def update(self):
         pass
-    pass
-
-class Theme():
-    def __init__(self):
-        self.image = pg.image.load(r'theme\testtheme.jpg')
-        self.image = pg.transform.scale(self.image, (ScreenWidth, ScreenHeight))
-
-        self.rect = self.image.get_rect(topleft = (0, 0))
-        pass
-    def draw(self):
-        Screen.blit(self.image, self.rect)
-        pass 
-    pass
-class TextBox():
-    def __init__(self):
-        self.image = pg.image.load(r'character\textbox.png')
-        self.image = pg.transform.scale(self.image, (1024, 307))
-
-        self.rect = self.image.get_rect(bottomleft = (0, ScreenHeight))
-        pass 
-    def draw(self):
-        Screen.blit(self.image, self.rect)
-        pass 
-    def update():
-        pass 
-    pass
 
 # init variables for game loop
-player = MainChar()
-textbox = TextBox()
-background = Theme()
+flappy_theme = FlappyBirdTheme()
+ground_x = 0
+ground_speed = 5
+
 while True:
     # draw
     Screen.fill(Colors.WHITE)
-    background.draw()
-    player.draw()
-    textbox.draw()
+    flappy_theme.draw(ground_x)
+    ground_x -= ground_speed
+    print(ground_x)
+    if abs(ground_x) > 30:
+        ground_x = 0
+
     # update
     for event in pg.event.get():
         if event.type == pg.QUIT:
