@@ -73,5 +73,6 @@ def quit_game():
     shutil.rmtree(r'__pycache__')  # delete cache folders
     shutil.rmtree(r'theme\__pycache__')
     shutil.rmtree(r'character\__pycache__')
+    shutil.rmtree(r'mission\__pycache__')
     pg.quit()
     sys.exit()

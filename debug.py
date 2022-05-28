@@ -3,51 +3,66 @@ import pygame as pg
 import sys
 import shutil
 from setup import Screen, Colors, Screen, fps_clock, update_screen, ScreenWidth, ScreenHeight, FontType
-from mission import *
+from mission.flappybird import *
 pg.init()
 
-class FlappyBirdTheme():
-    def __init__(self):
-        self.background = pg.image.load(r'mission\flappybird\background.png')
-        self.background = pg.transform.scale(self.background, (ScreenWidth, ScreenHeight))
-        self.background_rect = self.background.get_rect(topleft = (0, 0))
-        
-        self.ground = pg.image.load(r'mission\flappybird\ground.png')
-        self.ground = pg.transform.scale(self.ground, (ScreenWidth, ScreenHeight // 5))
-        self.ground_rect = self.ground.get_rect(bottomleft = (0, ScreenHeight))
-        pass
-
-    def draw(self, ground_x):
-        self.ground_rect = self.ground.get_rect(bottomleft = (ground_x, ScreenHeight))
-        Screen.blit(self.background, self.background_rect)
-        Screen.blit(self.ground, self.ground_rect)
-        pass
-
-    def update(self):
-        pass
 
 # init variables for game loop
+last_pipe = pg.time.get_ticks()
+pipe_frequency = 1500  # miliseconds
 flappy_theme = FlappyBirdTheme()
-ground_x = 0
-ground_speed = 5
+ground = Ground()
+
+bird = Bird(100, int(ScreenHeight / 2) - 100)
+bird_group = pg.sprite.Group()
+bird_group.add(bird)
+
+pipe_group = pg.sprite.Group()
+top_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), 1)
+bottom_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), -1)
+pipe_group.add(top_pipe)
+pipe_group.add(bottom_pipe)
+
+game_over = False
+flying = True
 
 while True:
     # draw
     Screen.fill(Colors.WHITE)
-    flappy_theme.draw(ground_x)
-    ground_x -= ground_speed
-    print(ground_x)
-    if abs(ground_x) > 30:
-        ground_x = 0
+    flappy_theme.draw()
+    bird_group.draw(Screen)
+    pipe_group.draw(Screen)
+
+    ground.draw()
 
     # update
+    ground.update()
+    pipe_group.update()
+    bird_group.update()
+
+    current_time = pg.time.get_ticks()
+    # draw pipes
+    if current_time - last_pipe > pipe_frequency:
+        top_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), 1)
+        bottom_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), -1)
+        pipe_group.add(top_pipe)
+        pipe_group.add(bottom_pipe)
+        last_pipe = current_time
+
+    # check colide
+    if pg.sprite.groupcollide(pipe_group, bird_group, False, False) or bird.flying == False:
+        game_over = True
+
+    if game_over:
+        pg.quit()
+        sys.exit()
+
+    # check event
     for event in pg.event.get():
         if event.type == pg.QUIT:
             shutil.rmtree(r'__pycache__')  # delete cache folder
             pg.quit()
             sys.exit()
-        if event.type == pg.MOUSEBUTTONUP:
-            pass
 
     fps_clock()
     update_screen()
