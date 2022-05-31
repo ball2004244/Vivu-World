@@ -116,7 +116,7 @@ class Bird(pg.sprite.Sprite):
 
 
 class Pipe(pg.sprite.Sprite):
-    def __init__(self, x, y, position):
+    def __init__(self, x, y, position, gap_position):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.image.load(r'mission\flappybird\pipe.png')
         self.image = pg.transform.scale(
@@ -124,14 +124,15 @@ class Pipe(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         self.gap = 150  # the space between up pipe and down pipe
-
         # position = 1 is top, = -1 is bottom
         if position == 1:
             self.image = pg.transform.flip(self.image, False, True)
-            self.rect.bottomleft = (x, y - 150 - int(self.gap / 2))
+            self.rect.bottomleft = (
+                x, y - 100 - int(self.gap / 2) - gap_position)
 
         if position == -1:
-            self.rect.topleft = (x, y - 150 + int(self.gap / 2))
+            self.rect.topleft = (
+                x, y - 100 + int(self.gap / 2) - gap_position)
 
         pass
 

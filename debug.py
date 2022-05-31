@@ -2,6 +2,7 @@
 import pygame as pg
 import sys
 import shutil
+import random
 from setup import Screen, Colors, Screen, fps_clock, update_screen, ScreenWidth, ScreenHeight, FontType
 from mission.flappybird import *
 pg.init()
@@ -18,8 +19,8 @@ bird_group = pg.sprite.Group()
 bird_group.add(bird)
 
 pipe_group = pg.sprite.Group()
-top_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), 1)
-bottom_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), -1)
+top_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), 1, 0)
+bottom_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), -1, 0)
 pipe_group.add(top_pipe)
 pipe_group.add(bottom_pipe)
 
@@ -43,15 +44,16 @@ while True:
     current_time = pg.time.get_ticks()
     # draw pipes
     if current_time - last_pipe > pipe_frequency:
-        top_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), 1)
-        bottom_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), -1)
+        gap_position = random.randint(-50, 125)
+        top_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), 1, gap_position)
+        bottom_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), -1, gap_position)
         pipe_group.add(top_pipe)
         pipe_group.add(bottom_pipe)
         last_pipe = current_time
 
     # check colide
     if pg.sprite.groupcollide(pipe_group, bird_group, False, False) or bird.flying == False:
-        game_over = True
+         game_over = True
 
     if game_over:
         pg.quit()
