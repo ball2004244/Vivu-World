@@ -1,6 +1,6 @@
 import pygame as pg
 from pygame.locals import *
-from setup import Screen, ScreenWidth, ScreenHeight
+from setup import Screen, ScreenWidth, ScreenHeight, FontType, Colors
 
 pg.init()
 
@@ -145,3 +145,63 @@ class Pipe(pg.sprite.Sprite):
         if self.rect.right < 0:
             self.kill()
         pass
+
+
+class ScoreBoard():
+    def __init__(self):
+        self.value = 0
+        self.pass_pipe = False
+        pass
+
+    def draw(self):
+        self.text_surf = pg.font.Font.render(
+            FontType.FONT1, str(self.value), True, Colors.WHITE)
+        self.text_rect = self.text_surf.get_rect(
+            center=(ScreenWidth // 2, ScreenHeight // 14))
+        Screen.blit(self.text_surf, self.text_rect)
+        pass
+
+class Restart():
+    def __init__(self):
+        self.game_over = False
+        self.restart_button = pg.image.load(r'mission\flappybird\restart.png')
+        self.restart_rect = self.restart_button.get_rect(center=(ScreenWidth // 2, ScreenHeight // 2))
+        pass 
+    
+    def draw(self):
+        if self.game_over == True:
+            Screen.blit(self.restart_button, self.restart_rect)
+        pass 
+    
+    def update(self):
+        mouse_pos = pg.mouse.get_pos()
+        if self.restart_rect.collidepoint(mouse_pos):
+            if pg.mouse.get_pressed()[0] == 1 and self.game_over:
+                self.game_over = False
+                score.value = 0
+        pass 
+    
+    def reset(self):
+        pipe_group.empty()
+        bird.rect.x = 100
+        bird.rect.y = int(ScreenHeight / 2) - 100
+        pass
+
+
+last_pipe = pg.time.get_ticks()
+pipe_frequency = 1500  # miliseconds
+
+flappy_theme = FlappyBirdTheme()
+ground = Ground()
+score = ScoreBoard()
+restart = Restart() 
+
+bird = Bird(100, int(ScreenHeight / 2) - 100)
+bird_group = pg.sprite.Group()
+bird_group.add(bird)
+
+pipe_group = pg.sprite.Group()
+top_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), 1, 0)
+bottom_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), -1, 0)
+pipe_group.add(top_pipe)
+pipe_group.add(bottom_pipe)

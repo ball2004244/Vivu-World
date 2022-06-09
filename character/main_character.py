@@ -10,6 +10,11 @@ class MainChar():
         self.image = pg.transform.scale(self.image, (300, 445))
 
         self.rect = self.image.get_rect(bottomleft = (50, ScreenHeight - 307))
+
+        #attribute
+        self.hp = 100
+        self.mp = 50 
+        self.die = False 
         pass 
 
     def draw(self):

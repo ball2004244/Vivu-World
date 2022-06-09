@@ -9,23 +9,6 @@ pg.init()
 
 
 # init variables for game loop
-last_pipe = pg.time.get_ticks()
-pipe_frequency = 1500  # miliseconds
-flappy_theme = FlappyBirdTheme()
-ground = Ground()
-
-bird = Bird(100, int(ScreenHeight / 2) - 100)
-bird_group = pg.sprite.Group()
-bird_group.add(bird)
-
-pipe_group = pg.sprite.Group()
-top_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), 1, 0)
-bottom_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), -1, 0)
-pipe_group.add(top_pipe)
-pipe_group.add(bottom_pipe)
-
-game_over = False
-flying = True
 
 while True:
     # draw
@@ -33,31 +16,42 @@ while True:
     flappy_theme.draw()
     bird_group.draw(Screen)
     pipe_group.draw(Screen)
-
     ground.draw()
+    score.draw()
+    restart.draw()
 
-    # update
+    # update 
+    restart.update()
     ground.update()
     pipe_group.update()
     bird_group.update()
-
-    current_time = pg.time.get_ticks()
     # draw pipes
+    current_time = pg.time.get_ticks()
     if current_time - last_pipe > pipe_frequency:
         gap_position = random.randint(-50, 125)
         top_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), 1, gap_position)
-        bottom_pipe = Pipe(ScreenWidth, int(ScreenHeight / 2), -1, gap_position)
+        bottom_pipe = Pipe(ScreenWidth, int(
+            ScreenHeight / 2), -1, gap_position)
         pipe_group.add(top_pipe)
         pipe_group.add(bottom_pipe)
         last_pipe = current_time
 
-    # check colide
+    # check if game is over
     if pg.sprite.groupcollide(pipe_group, bird_group, False, False) or bird.flying == False:
-         game_over = True
+        restart.game_over = True
+    
+    if restart.game_over == True:
+        restart.reset()
+    # check score
+    if len(pipe_group) > 0:
+        if score.pass_pipe == False \
+            and bird_group.sprites()[0].rect.right < pipe_group.sprites()[0].rect.right:
+            score.pass_pipe = True
 
-    if game_over:
-        pg.quit()
-        sys.exit()
+        if score.pass_pipe == True:
+            if bird_group.sprites()[0].rect.left > pipe_group.sprites()[0].rect.right:
+                score.value += 1
+                score.pass_pipe = False
 
     # check event
     for event in pg.event.get():
