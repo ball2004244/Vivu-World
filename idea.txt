@@ -1,2 +1,2 @@
-+ 7 dungeon => 7 màu cầu vồng và boss màu trắng
-+ 5 dungeon => nước, đất, lửa, khí, thực vật ; boss là ánh sáng
+- 7 dungeon => 7 màu cầu vồng và boss màu trắng
+- 5 dungeon => nước, đất, lửa, khí, thực vật ; boss là ánh sáng
