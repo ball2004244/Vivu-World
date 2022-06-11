@@ -95,6 +95,8 @@ class Bird(pg.sprite.Sprite):
             self.images[self.index], self.velocity * -3)
 
         '''Gravity'''
+        if self.flying == False:
+            self.flying = True
         self.velocity += 0.5
         if self.rect.bottom < 768 - 150:
             self.rect.y += int(self.velocity)
