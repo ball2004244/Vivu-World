@@ -14,6 +14,8 @@ while True:
     paddle.draw()
     ball.draw()
     # update 
+    paddle.update()
+    ball.update()
 
     # check event
     for event in pg.event.get():
