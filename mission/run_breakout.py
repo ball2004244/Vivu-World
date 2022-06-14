@@ -10,7 +10,7 @@ from mission.breakout import *
 while True:
     # draw
     Screen.fill(Colors.WHITE)
-    brick_group.draw(Screen)
+    brick.draw()
     paddle.draw()
     ball.draw()
     # update 
