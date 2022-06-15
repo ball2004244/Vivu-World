@@ -8,7 +8,20 @@ pg.init()
 
 
 class BreakOutTheme():
-    pass
+    def __init__(self):
+        self.game_over = False 
+        self.win = False
+        pass
+    
+    def update(self):
+        if self.game_over == True:
+            #retart + reset
+            pass
+        
+        if self.win == True:
+            # rewar + reset 
+            pass
+        pass
 
 
 class Brick():
@@ -93,7 +106,7 @@ class Ball():
             self.image, (48, 48))
         self.x = ScreenWidth // 2
         self.y = ScreenHeight - 100
-        self.speed_x = 5
+        self.speed_x = 12
         self.speed_y = - self.speed_x
         pass
 
@@ -114,12 +127,12 @@ class Ball():
         # check collide with floor
         if self.rect.bottom > ScreenHeight:
             self.speed_y *= -1  # This is for fun, must delete afterward
-            self.game_over = True
+            breakout.game_over = True
         self.x += self.speed_x
         self.y += self.speed_y
 
         # check collide with paddle
-        collide_threshold = 5  # limitation
+        collide_threshold = 15  # limitation
         if self.rect.colliderect(paddle):
             if abs(self.rect.bottom - paddle.rect.top) < collide_threshold and self.speed_y > 0:
                 self.speed_y *= -1
@@ -140,7 +153,10 @@ class Ball():
                 if abs(self.rect.left - item[1].right) < collide_threshold and self.speed_x < 0:
                     self.speed_x *= -1
                 brick.brick_arr.remove(item)
-                print(len(brick.brick_arr))
+
+        # check break all bricks
+        if len(brick.brick_arr) == 0:
+            breakout.win = True
 
 
 
@@ -149,6 +165,7 @@ class Ball():
 
 
 # init
+breakout = BreakOutTheme()
 paddle = Paddle()
 ball = Ball()
 brick = Brick()
