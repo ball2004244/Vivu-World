@@ -27,21 +27,27 @@ class Brick():
         # scale image to desire size, original scale: (1920, 1080)
         self.image3 = pg.transform.scale(
                 self.image3, (64, 36))
-        pass
 
-    def draw(self):
+        '''Draw bricks'''
+        self.brick_arr = []
         image = self.image1
         for brick_y in range(0, ScreenHeight // 4, 42):
             for brick_x in range(0, ScreenWidth, 74):
+                # change bricks' color
                 if brick_y < ScreenHeight // (3 * 4):
                     image = self.image1    
                 elif brick_y < ScreenHeight * 2 // (3 * 4):
                     image = self.image2
                 else:
                     image = self.image3
-                self.rect = image.get_rect(topleft=(brick_x, brick_y))
-                Screen.blit(image, self.rect)        
-            # change bricks' color sequentially
+
+                rect = image.get_rect(topleft=(brick_x, brick_y))
+                self.brick_arr.append((image, rect))
+        pass
+
+    def draw(self):
+        for (image, rect) in self.brick_arr:
+            Screen.blit(image, rect)       
         pass
 
     def update(self):
@@ -119,6 +125,26 @@ class Ball():
                 self.speed_y *= -1
 
         # check collide with bricks
+        for item in brick.brick_arr:
+            if self.rect.colliderect(item[1]):
+                # check collide above
+                if abs(self.rect.bottom - item[1].top) < collide_threshold and self.speed_y > 0:
+                    self.speed_y *= -1
+                # check collide below
+                if abs(self.rect.top - item[1].bottom) < collide_threshold and self.speed_y < 0:
+                    self.speed_y *= -1
+                # check collide left
+                if abs(self.rect.right - item[1].left) < collide_threshold and self.speed_x > 0:
+                    self.speed_x *= -1
+                # check collide right
+                if abs(self.rect.left - item[1].right) < collide_threshold and self.speed_x < 0:
+                    self.speed_x *= -1
+                brick.brick_arr.remove(item)
+                print(len(brick.brick_arr))
+
+
+
+
     pass
 
 
