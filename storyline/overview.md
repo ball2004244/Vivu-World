@@ -23,4 +23,4 @@ Viên đá của khu vực:
 -	K thể sử dụng cho đến khi tập hợp đủ 5 viên
 -	Có 5 viên: tượng trưng cho 5 kiểu dạng vật chất của lục địa: lửa (nothing), nước (liquid), khí (gas), đất(solid), thực vật (all)
 -	Mỗi khu có môi trường riêng biệt, và có tồn tại viên đá ở khu vực đó để kiềm lại môi trường (vd như ở môi trường dung nham thì có viên nước)
--	The Mysmist có tác dụng chính là kiềm hãm môi trường độc hại lan rộng
+-	Da Mysmist có tác dụng chính là kiềm hãm môi trường bất lợi lan rộng
