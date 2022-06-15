@@ -1,8 +1,12 @@
 
 import pygame as pg
 import sys
+import os
 import shutil
 import random
+
+# this import all files in parents folder to children folder
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
 from setup import Screen, Colors, Screen, fps_clock, update_screen, ScreenWidth, ScreenHeight, FontType
 from mission.flappybird import *
 pg.init()
