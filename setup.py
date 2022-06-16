@@ -1,6 +1,9 @@
 import pygame as pg
+import sys
+import shutil
 from pygame.locals import *
 pg.init()
+
 
 class Colors():
     WHITE = (255, 255, 255)
@@ -31,21 +34,24 @@ class Colors():
     BLUISH_PURPLE = (113, 69, 240)
     PURPLE = (128, 0, 128)
     AQUAMARINE = (0, 255, 191)
-    LIGHTBROWN = (124, 96, 62)
+    LIGHT_BROWN = (124, 96, 62)
     PLUM = (221, 160, 221)
-    GRASSGREEN = (0,154,23)
-    CYAN = (0,255,255)
-    BRICKRED = (203, 65, 84)
-    BLUEGREY = (104, 118, 129)
-    GOLDENROD = (218, 165, 32)
+    GRASS_GREEN = (0, 154, 23)
+    CYAN = (0, 255, 255)
+    BRICK_RED = (203, 65, 84)
+    BLUE_GREY = (104, 118, 129)
+    GOLDEN_ROD = (218, 165, 32)
     CERULEAN = (0, 123, 167)
     MUSTARD = (225, 173, 1)
-    TEAL = (0,128, 128)
+    TEAL = (0, 128, 128)
+
 
 class FontType():
-    FONT1 = pg.font.SysFont('Cambria', 50)
-    FONT2 = pg.font.SysFont('Cambria', 30)
-    FONT3 = pg.font.SysFont('Garamond', 20)
+    FONT1 = pg.font.SysFont('Garamond', 120)
+    FONT2 = pg.font.SysFont('Garamond', 50)
+    FONT3 = pg.font.SysFont('Garamond', 30)
+    FONT4 = pg.font.SysFont('Garamond', 20)
+
 
 # Screen
 ScreenWidth = 1024
@@ -53,10 +59,20 @@ ScreenHeight = 768
 Screen = pg.display.set_mode((ScreenWidth, ScreenHeight))
 pg.display.set_caption('VIVU: World')
 
+
 def fps_clock():
     FPS = 120
     clock = pg.time.Clock()
     clock.tick(FPS)
 
+
 def update_screen():
     pg.display.update()
+
+def quit_game():
+    shutil.rmtree(r'__pycache__')  # delete cache folders
+    shutil.rmtree(r'theme\__pycache__')
+    shutil.rmtree(r'character\__pycache__')
+    shutil.rmtree(r'mission\__pycache__')
+    pg.quit()
+    sys.exit()
