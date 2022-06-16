@@ -1,7 +1,8 @@
 **Developer Note**
-sub-commit branch is for story development
-sub-commit-2 branch is for code process
-sub-commit-3 branch is for design
+
+- sub-commit branch is for story development
+- sub-commit-2 branch is for code process
+- sub-commit-3 branch is for design
 
 **Story Overview**
 This game takes place in a continent named "Vivu", where used to be a peaceful place in the 6th universe. 
