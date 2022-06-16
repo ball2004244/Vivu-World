@@ -1,5 +1,6 @@
 import pygame as pg
-import sys, os.path
+import sys
+import os
 import shutil
 
 # this import all files in parents folder to children folder

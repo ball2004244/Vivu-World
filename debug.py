@@ -6,7 +6,6 @@ from mission.breakout import *
 
 
 # init
-brick = Brick(100, 100, 200, 200)
 while True:
     # draw
     Screen.fill(Colors.WHITE)
