@@ -14,9 +14,11 @@ while True:
     brick.draw()
     paddle.draw()
     ball.draw()
+    
     # update 
     paddle.update()
     ball.update()
+    breakout.update()
 
     # check event
     for event in pg.event.get():
