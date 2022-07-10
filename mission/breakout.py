@@ -42,6 +42,8 @@ class BreakOutTheme():
             ball.slope = 3/2
         elif self.difficulty == 2:
             ball.slope = 2
+        else:
+            ball.slope = 2
 
     def reset(self):
         # Reset ball
@@ -52,20 +54,7 @@ class BreakOutTheme():
         # Reset paddle
         paddle.x = ScreenWidth // 2
         # Redraw bricks
-        brick.brick_arr = []
-        image = brick.image1
-        for brick_y in range(0, ScreenHeight // 4, 42):
-            for brick_x in range(0, ScreenWidth, 74):
-                # change bricks' color
-                if brick_y < ScreenHeight // (3 * 4):
-                    image = brick.image1
-                elif brick_y < ScreenHeight * 2 // (3 * 4):
-                    image = brick.image2
-                else:
-                    image = brick.image3
-
-                rect = image.get_rect(topleft=(brick_x, brick_y))
-                brick.brick_arr.append((image, rect))
+        brick.wall_init()
         pass
 
 
@@ -74,18 +63,22 @@ class Brick():
         self.image1 = pg.image.load(r'mission\breakout\box_1.png')
         # scale image to desire size, original scale: (1920, 1080)
         self.image1 = pg.transform.scale(
-            self.image1, (64, 36))
+            self.image1, (72, 40))
 
         self.image2 = pg.image.load(r'mission\breakout\box_2.png')
         # scale image to desire size, original scale: (1920, 1080)
         self.image2 = pg.transform.scale(
-            self.image2, (64, 36))
+            self.image2, (72, 40))
 
         self.image3 = pg.image.load(r'mission\breakout\box_3.png')
         # scale image to desire size, original scale: (1920, 1080)
         self.image3 = pg.transform.scale(
-            self.image3, (64, 36))
+            self.image3, (72, 40))
+        
+        self.wall_init()
+        pass
 
+    def wall_init(self):
         '''Draw bricks'''
         self.brick_arr = []
         image = self.image1
