@@ -2,12 +2,19 @@ import pygame as pg
 import sys
 import shutil
 from setup import *
-
+from character.main_character import MainChar, TextBox
+from theme.theme_display import Setting
 
 # init
+setting = Setting()
+main_char = MainChar()
+text_box = TextBox('Tam Ng', 'Hello everybody, my name is T')
 while True:
     # draw
     Screen.fill(Colors.WHITE)
+    setting.draw()
+    main_char.draw()
+    text_box.draw()
     # update 
     
     # check event

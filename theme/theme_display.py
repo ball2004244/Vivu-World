@@ -33,6 +33,16 @@ class Button():
         return False
     pass
 
+class Setting():
+    def __init__(self):
+        self.image = pg.image.load(r'theme\test.jpg')
+        self.image = pg.transform.scale(
+            self.image, (ScreenWidth, ScreenHeight))
+        self.rect = self.image.get_rect(topleft=(0, 0))
+        pass
+    def draw(self):
+        Screen.blit(self.image, self.rect)
+        pass
 
 class Theme():
     def __init__(self, theme_num):
