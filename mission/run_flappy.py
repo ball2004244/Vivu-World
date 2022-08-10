@@ -1,4 +1,5 @@
-
+from mission.flappybird import *
+from setup import *
 import pygame as pg
 import sys
 import os
@@ -6,13 +7,9 @@ import shutil
 import random
 
 # this import all files in parents folder to children folder
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
-from setup import Screen, Colors, Screen, fps_clock, update_screen, ScreenWidth, ScreenHeight, FontType
-from mission.flappybird import *
+sys.path.append(os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), os.pardir))
 pg.init()
-
-
-# init variables for game loop
 
 while True:
     # draw
@@ -24,7 +21,7 @@ while True:
     score.draw()
     restart.draw()
 
-    # update 
+    # update
     restart.update()
     ground.update()
     pipe_group.update()
@@ -43,13 +40,13 @@ while True:
     # check if game is over
     if pg.sprite.groupcollide(pipe_group, bird_group, False, False) or bird.flying == False:
         restart.game_over = True
-    
+
     if restart.game_over == True:
         restart.reset()
     # check score
     if len(pipe_group) > 0:
         if score.pass_pipe == False \
-            and bird_group.sprites()[0].rect.right < pipe_group.sprites()[0].rect.right:
+                and bird_group.sprites()[0].rect.right < pipe_group.sprites()[0].rect.right:
             score.pass_pipe = True
 
         if score.pass_pipe == True:
