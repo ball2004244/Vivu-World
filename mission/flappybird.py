@@ -163,26 +163,28 @@ class ScoreBoard():
         Screen.blit(self.text_surf, self.text_rect)
         pass
 
+
 class Restart():
     def __init__(self):
         self.game_over = False
         self.restart_button = pg.image.load(r'mission\flappybird\restart.png')
-        self.restart_rect = self.restart_button.get_rect(center=(ScreenWidth // 2, ScreenHeight // 2))
-        pass 
-    
+        self.restart_rect = self.restart_button.get_rect(
+            center=(ScreenWidth // 2, ScreenHeight // 2))
+        pass
+
     def draw(self):
         if self.game_over == True:
             Screen.blit(self.restart_button, self.restart_rect)
-        pass 
-    
+        pass
+
     def update(self):
         mouse_pos = pg.mouse.get_pos()
         if self.restart_rect.collidepoint(mouse_pos):
             if pg.mouse.get_pressed()[0] == 1 and self.game_over:
                 self.game_over = False
                 score.value = 0
-        pass 
-    
+        pass
+
     def reset(self):
         pipe_group.empty()
         bird.rect.x = 100
@@ -196,7 +198,7 @@ pipe_frequency = 1500  # miliseconds
 flappy_theme = FlappyBirdTheme()
 ground = Ground()
 score = ScoreBoard()
-restart = Restart() 
+restart = Restart()
 
 bird = Bird(100, int(ScreenHeight / 2) - 100)
 bird_group = pg.sprite.Group()
