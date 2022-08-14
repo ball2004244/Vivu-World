@@ -1,8 +1,10 @@
 import random
+import shutil 
 import pygame as pg
+import sys
 from pygame.locals import *
-from setup import Colors, FontType, Screen, ScreenWidth, ScreenHeight
-from mission.breakout import *
+sys.path.append('../Vivu-World')
+from setup import *
 pg.init()
 
 
@@ -209,8 +211,35 @@ class Ball():
     pass
 
 
-# init
+# Initialize
 breakout = BreakOutTheme()
 paddle = Paddle()
 ball = Ball()
 brick = Brick()
+
+'''
+TESTING HERE
+'''
+if __name__ == '__main__':
+    while True:
+        # draw
+        Screen.fill(Colors.WHITE)
+        brick.draw()
+        paddle.draw()
+        ball.draw()
+        
+        # update 
+        paddle.update()
+        ball.update()
+        breakout.update()
+
+        # check event
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                shutil.rmtree(r'__pycache__')  # delete cache folder
+                shutil.rmtree(r'mission/__pycache__')
+                pg.quit()
+                sys.exit()
+
+        fps_clock()
+        update_screen()
