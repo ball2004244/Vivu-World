@@ -62,17 +62,17 @@ class BreakOutTheme():
 
 class Brick():
     def __init__(self):
-        self.image1 = pg.image.load(r'mission\breakout\box_1.png')
+        self.image1 = pg.image.load(r'old_mission\breakout\box_1.png')
         # scale image to desire size, original scale: (1920, 1080)
         self.image1 = pg.transform.scale(
             self.image1, (72, 40))
 
-        self.image2 = pg.image.load(r'mission\breakout\box_2.png')
+        self.image2 = pg.image.load(r'old_mission\breakout\box_2.png')
         # scale image to desire size, original scale: (1920, 1080)
         self.image2 = pg.transform.scale(
             self.image2, (72, 40))
 
-        self.image3 = pg.image.load(r'mission\breakout\box_3.png')
+        self.image3 = pg.image.load(r'old_mission\breakout\box_3.png')
         # scale image to desire size, original scale: (1920, 1080)
         self.image3 = pg.transform.scale(
             self.image3, (72, 40))
@@ -106,7 +106,7 @@ class Brick():
 
 class Paddle():
     def __init__(self):
-        self.image = pg.image.load(r'mission\breakout\paddle.png')
+        self.image = pg.image.load(r'old_mission\breakout\paddle.png')
         # scale image to desire size, original scale: (1920, 1080)
         self.image = pg.transform.scale(
             self.image, (240, 18))
@@ -137,7 +137,7 @@ class Ball():
         y = input y
         rad = 24
         '''
-        self.image = pg.image.load(r'mission\breakout\ball.png')
+        self.image = pg.image.load(r'old_mission\breakout\ball.png')
         # scale image to desire size, original scale: (1920, 1080)
         self.image = pg.transform.scale(
             self.image, (48, 48))
@@ -155,7 +155,7 @@ class Ball():
         pass
 
     def draw(self):
-        self.rect = self.image.get_rect(center=(self.x, self.y))
+        self.rect = self.image.get_rect(center=(int(self.x), int(self.y)))
         Screen.blit(self.image, self.rect)
         Screen.blit(self.text_surf, self.text_rect)
         pass
@@ -237,7 +237,7 @@ if __name__ == '__main__':
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 shutil.rmtree(r'__pycache__')  # delete cache folder
-                shutil.rmtree(r'mission/__pycache__')
+                shutil.rmtree(r'old_mission/__pycache__')
                 pg.quit()
                 sys.exit()
 

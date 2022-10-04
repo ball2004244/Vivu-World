@@ -14,7 +14,7 @@ game_speed = 6
 
 class FlappyBirdTheme():
     def __init__(self):
-        self.background = pg.image.load(r'mission\flappybird\background.png')
+        self.background = pg.image.load(r'old_mission\flappybird\background.png')
         self.background = pg.transform.scale(
             self.background, (ScreenWidth, ScreenHeight))
         self.background_rect = self.background.get_rect(topleft=(0, 0))
@@ -29,7 +29,7 @@ class FlappyBirdTheme():
 
 class Ground():
     def __init__(self):
-        self.ground = pg.image.load(r'mission\flappybird\ground.png')
+        self.ground = pg.image.load(r'old_mission\flappybird\ground.png')
         self.ground = pg.transform.scale(
             self.ground, (ScreenWidth + 50, ScreenHeight // 5))
         self.ground_rect = self.ground.get_rect(bottomleft=(0, ScreenHeight))
@@ -64,7 +64,7 @@ class Bird(pg.sprite.Sprite):
         # showing 3 kinds of birds
         for index in range(1, 4):
             image = pg.image.load(
-                r'mission\flappybird\bird' + str(index) + '.png')
+                r'old_mission\flappybird\bird' + str(index) + '.png')
             self.images.append(image)
 
         # rescale bird to some resolution
@@ -124,7 +124,7 @@ class Bird(pg.sprite.Sprite):
 class Pipe(pg.sprite.Sprite):
     def __init__(self, x, y, position, gap_position):
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.image.load(r'mission\flappybird\pipe.png')
+        self.image = pg.image.load(r'old_mission\flappybird\pipe.png')
         self.image = pg.transform.scale(
             self.image, (78 * 24 // 35, 560 * 24 // 35))
         self.rect = self.image.get_rect()
@@ -171,7 +171,7 @@ class ScoreBoard():
 class Restart():
     def __init__(self):
         self.game_over = False
-        self.restart_button = pg.image.load(r'mission\flappybird\restart.png')
+        self.restart_button = pg.image.load(r'old_mission\flappybird\restart.png')
         self.restart_rect = self.restart_button.get_rect(
             center=(ScreenWidth // 2, ScreenHeight // 2))
         pass
