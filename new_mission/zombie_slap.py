@@ -9,8 +9,11 @@ from setup import *
 
 pg.init()
 
-# Init
-game_speed = 6
+zom_img = pg.image.load(r'new_mission\zombie_slap\zombie.png').convert_alpha()
+zom_img = pg.transform.scale(zom_img, (50, 50))
+
+swatter_img = pg.image.load(r'new_mission\zombie_slap\swatter.png').convert_alpha()
+swatter_img = pg.transform.scale(swatter_img, (60, 60))
 
 class ZombieSlapTheme():
     def __init__(self):
@@ -31,9 +34,7 @@ class ZombieSlapTheme():
 class Zombie(pg.sprite.Sprite):
     def __init__(self, x, y):
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.image.load(r'new_mission\zombie_slap\zombie.png')
-        self.image = pg.transform.scale(
-            self.image, (50, 50))
+        self.image = zom_img
         self.rect = self.image.get_rect(center=(x, y))
 
         pass
@@ -42,21 +43,10 @@ class Zombie(pg.sprite.Sprite):
         Screen.blit(self.image, self.rect)
         pass
 
-    def check_hit(self):
-        # check click
-        mouse_pos = pg.mouse.get_pos()
-        if self.rect.collidepoint(mouse_pos):
-            if pg.mouse.get_pressed()[0] == 1:
-                self.kill()
-                print('Zombie hit')
-        pass
-
 class Swatter(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.image.load(r'new_mission\zombie_slap\swatter.png')
-        self.image = pg.transform.scale(
-            self.image, (60, 60))
+        self.image = swatter_img
         self.rect = self.image.get_rect()
         pass
 
@@ -69,6 +59,19 @@ class Swatter(pg.sprite.Sprite):
     def update(self):
         pass    
 
+class ScoreBoard():
+    def __init__(self):
+        self.score = 0
+        pass
+
+    def draw(self):
+        self.text_surf = pg.font.Font.render(
+            FontType.FONT1, str(self.score), True, Colors.BLACK)
+        self.text_rect = self.text_surf.get_rect(
+            center=(ScreenWidth // 2, ScreenHeight // 14))
+        Screen.blit(self.text_surf, self.text_rect)
+        pass
+
 # Initialize
 swatter_group = pg.sprite.Group()
 zom_group = pg.sprite.Group()
@@ -79,7 +82,7 @@ for i in range(20):
 swatter = Swatter()
 swatter_group.add(swatter)
 
-score = 0
+score_board = ScoreBoard()
 game_over = False
 time_limit = 3 # 3 seconds time limit
 start = pg.time.get_ticks() #start count time
@@ -92,10 +95,10 @@ if __name__ == '__main__':
         Screen.fill(Colors.WHITE)
         zom_group.draw(Screen)
         swatter.draw()
-
+        score_board.draw()
         # update
         if game_over:
-            print(f'Your score is: {score}')
+            print(f'Your score is: {score_board.score}')
             pg.quit()
             sys.exit()
 
@@ -108,7 +111,7 @@ if __name__ == '__main__':
         if pg.mouse.get_pressed()[0] == 1 and game_over == False:
             if pg.sprite.groupcollide(zom_group, swatter_group, True, False):
                 #print('Zombie_hit')   
-                score += 1
+                score_board.score += 1
 
         # check event
         for event in pg.event.get():
