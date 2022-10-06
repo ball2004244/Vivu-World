@@ -4,7 +4,7 @@ from pygame.locals import *
 from setup import fps_clock, update_screen, quit_game, Screen, Colors
 from theme.theme_display import *
 from character.main_character import MainChar
-from mission.breakout import *
+
 pg.init()
 
 # Initialize variable for Main function
@@ -31,7 +31,7 @@ while True:
                 theme_num = theme0.new_game(theme_num)
 
             theme0.update()
-
+ 
 
 
         if event.type == pg.KEYDOWN:

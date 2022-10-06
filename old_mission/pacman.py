@@ -11,7 +11,7 @@ pg.init()
 
 class Pacman():
     def __init__(self):
-        self.image = pg.image.load(r'mission\pacman\pacman.png')
+        self.image = pg.image.load(r'old_mission\pacman\pacman.png')
         self.image = pg.transform.scale(
             self.image, (72, 40))
 
