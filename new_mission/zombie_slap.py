@@ -8,17 +8,18 @@ from setup import *
 
 pg.init()
 
+background = pg.image.load(r'new_mission\zombie_slap\background.png').convert_alpha()
+background = pg.transform.scale(background, (ScreenWidth, ScreenHeight))
+
 zom_img = pg.image.load(r'new_mission\zombie_slap\zombie.png').convert_alpha()
-zom_img = pg.transform.scale(zom_img, (50, 50))
+zom_img = pg.transform.scale(zom_img, (80, 80))
 
 swatter_img = pg.image.load(r'new_mission\zombie_slap\swatter.png').convert_alpha()
-swatter_img = pg.transform.scale(swatter_img, (60, 60))
+swatter_img = pg.transform.scale(swatter_img, (100, 100))
 
 class ZombieSlapTheme():
     def __init__(self):
-        self.background = pg.image.load(r'')
-        self.background = pg.transform.scale(
-            self.background, (ScreenWidth, ScreenHeight))
+        self.background = background
         self.background_rect = self.background.get_rect(topleft=(0, 0))
 
         self.game_over = False
@@ -85,7 +86,7 @@ class ScoreBoard():
 
     def draw(self):
         self.text_surf = pg.font.Font.render(
-            FontType.FONT1, str(self.score), True, Colors.BLACK)
+            FontType.FONT1, str(self.score), True, Colors.WHITE)
         self.text_rect = self.text_surf.get_rect(
             center=(ScreenWidth // 2, ScreenHeight // 14))
         Screen.blit(self.text_surf, self.text_rect)
@@ -105,6 +106,7 @@ score_board = ScoreBoard()
 game_over = False
 time_limit = 15 # 15 seconds time limit
 start = pg.time.get_ticks() #start count time
+theme = ZombieSlapTheme()
 '''
 TESTING HERE
 '''
@@ -112,35 +114,40 @@ if __name__ == '__main__':
     while True:
         # draw
         Screen.fill(Colors.WHITE)
-        swatter.draw()
+        theme.draw()
         score_board.draw()
 
         for zom in zom_group.sprites():
             zom.draw()
             zom.random_movement()
 
+        swatter.draw()
+
         # update
-        if game_over:
+        if game_over == True:
             print(f'Your score is: {score_board.score}')
             pg.quit()
             sys.exit()
+        else:
+            current = (pg.time.get_ticks() - start) // 1000 #convert tick to second, 1s = 1000ticks
+            if time_limit - current <= 0:
+                print('Time Out!')
+                game_over = True
 
+            if pg.mouse.get_pressed()[0] == 1 and clicked == False:
+                if pg.sprite.groupcollide(zom_group, swatter_group, True, False):
+                    score_board.score += 1
+                clicked = True
 
-        current = (pg.time.get_ticks() - start) // 1000 #convert tick to second, 1s = 1000ticks
-        if time_limit - current <= 0:
-            print('Time Out!')
-            game_over = True
+            if pg.mouse.get_pressed()[0] == 0:
+                clicked = False    
 
-        if pg.mouse.get_pressed()[0] == 1 and game_over == False:
-            if pg.sprite.groupcollide(zom_group, swatter_group, True, False):
-                score_board.score += 1
-
-        # check event
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                shutil.rmtree(r'__pycache__')  # delete cache folder
-                pg.quit()
-                sys.exit()
+            # check event
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    shutil.rmtree(r'__pycache__')  # delete cache folder
+                    pg.quit()
+                    sys.exit()
 
         fps_clock()
         update_screen()
