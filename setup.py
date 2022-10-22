@@ -59,6 +59,8 @@ ScreenHeight = 768
 Screen = pg.display.set_mode((ScreenWidth, ScreenHeight))
 pg.display.set_caption('VIVU: World')
 
+# Time Limit
+TimeLimit = 5
 
 def fps_clock():
     FPS = 120
