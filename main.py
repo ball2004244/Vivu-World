@@ -9,8 +9,7 @@ pg.init()
 
 # Initialize variable for Main function
 theme0 = ThemeZero()
-theme1 = ThemeOne()
-theme_list = [theme0, theme1]
+theme_list = [theme0]
 theme_num = 0 #index of current theme
 player = MainChar()
 

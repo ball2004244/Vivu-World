@@ -1,0 +1,18 @@
+{
+    "highest-score": 0,
+    "slot1": {
+        "score": 0,
+        "current-round": 1,
+        "status": "SAVED"
+    },
+    "slot2": {
+        "score": null,
+        "current-round": null,
+        "status": "EMPTY"
+    },
+    "slot3": {
+        "score": null,
+        "current-round": null,
+        "status": "EMPTY"
+    }
+}
