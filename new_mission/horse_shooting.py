@@ -5,6 +5,7 @@ from pygame.locals import *
 from random import randint
 sys.path.append('../Vivu-World')
 from setup import *
+from new_mission.general import *
 
 pg.init()
 
@@ -20,10 +21,10 @@ gun_img = pg.transform.scale(gun_img, (60, 60))
 # background = pg.image.load(r'')
 # background = pg.transform.scale(background, (ScreenWidth, ScreenHeight))
 
-class HorseShootingTheme():
+class HorseShootingTheme(Minigame):
     def __init__(self):
-        self.clicked = False
-        self.end_theme = False
+        Minigame.__init__(self)
+        self.shooting = True
         pass
 
     def prior_game_loop(self):
@@ -36,12 +37,8 @@ class HorseShootingTheme():
             self.horse_group.add(horse)
 
         self.gun = Gun()
-        self.score_board = ScoreBoard()
 
-        self.shooting = True
-        self.game_over = False
-        self.time_limit = TimeLimit # 3 seconds time limit
-        self.start = pg.time.get_ticks() #start count time
+        Minigame.prior_game_loop(self)
         pass
 
     def game_loop(self):
@@ -57,7 +54,7 @@ class HorseShootingTheme():
             horse.update()
         
         if self.game_over == False:
-            self.score_board.draw()
+            scoreboard.draw()
             if self.shooting == True:
                 # shoot bullets when click
                 if pg.mouse.get_pressed()[0] == 1 and self.clicked == False:
@@ -84,22 +81,15 @@ class HorseShootingTheme():
 
             # check bullet hit horse
             if pg.sprite.groupcollide(self.bullet_group, self.horse_group, True, True):
-                self.score_board.score += 1
+                scoreboard.add_score()
         else:
-            print(f'Your score is: {self.score_board.score}')
+            print(f'Your score is: {scoreboard.score}')
             self.end_theme = True
 
         current = (pg.time.get_ticks() - self.start) // 1000 #convert tick to second, 1s = 1000ticks
         if self.time_limit - current <= 0:
             print('Time Out!')
             self.game_over = True
-
-        # check event
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                shutil.rmtree(r'__pycache__')  # delete cache folder
-                pg.quit()
-                sys.exit()
 
         pass
 
@@ -171,27 +161,26 @@ class Bullet(pg.sprite.Sprite):
             self.kill()
         pass    
 
-class ScoreBoard():
-    def __init__(self):
-        self.score = 0
-        pass
-
-    def draw(self):
-        self.text_surf = pg.font.Font.render(
-            FontType.FONT1, str(self.score), True, Colors.BLACK)
-        self.text_rect = self.text_surf.get_rect(
-            center=(ScreenWidth // 2, ScreenHeight // 14))
-        Screen.blit(self.text_surf, self.text_rect)
-        pass
-
 # Initialize
 horse_shooting = HorseShootingTheme()
-horse_shooting.prior_game_loop()
+
 '''
 TESTING HERE
 '''
 if __name__ == '__main__':
+    horse_shooting.prior_game_loop()
     while True:
         horse_shooting.game_loop()
+        if horse_shooting.end_theme == True:
+            pg.quit()
+            sys.exit()
+
+        # check event
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                shutil.rmtree(r'__pycache__')  # delete cache folder
+                pg.quit()
+                sys.exit()
+                
         fps_clock()
         update_screen()

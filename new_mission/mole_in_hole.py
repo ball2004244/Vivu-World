@@ -5,7 +5,7 @@ from pygame.locals import *
 from random import randint
 sys.path.append('../Vivu-World')
 from setup import *
-
+from new_mission.general import *
 pg.init()
 
 mole_img = pg.image.load(r'new_mission\mole_in_hole\mole.png').convert_alpha()
@@ -20,11 +20,11 @@ hammer_img = pg.transform.scale(hammer_img, (170, 170))
 # background = pg.image.load(r'')
 # background = pg.transform.scale(background, (ScreenWidth, ScreenHeight))
 
-class MoleTheme():
+class MoleTheme(Minigame):
     def __init__(self):
-        self.clicked = False
-        self.end_theme = False
+        Minigame.__init__(self)
         pass 
+
     def prior_game_loop(self):
         self.mole_die = True
         self.mole_alive_time = 0
@@ -46,11 +46,7 @@ class MoleTheme():
         self.mole = Mole(self.hole_pos[0][0], self.hole_pos[0][1])
         self.mole_group.add(self.mole)
 
-        self.score_board = Scoreboard()
-
-        self.game_over = False
-        self.time_limit = TimeLimit # 15 seconds time limit
-        self.start = pg.time.get_ticks() #start count time
+        Minigame.prior_game_loop(self)
         pass
 
     def game_loop(self):
@@ -59,7 +55,8 @@ class MoleTheme():
         self.hole_group.draw(Screen)
         self.hammer.draw()
         self.mole.draw()
-        self.score_board.draw()
+        scoreboard.draw()
+
         if self.game_over == False:
             # create mole 
             if self.mole_die == True:
@@ -70,7 +67,7 @@ class MoleTheme():
                 self.mole_die = False
 
             if self.mole_die == False:
-                if (pg.time.get_ticks() - self.mole_alive_time) // 1000 > 0.5:
+                if (pg.time.get_ticks() - self.mole_alive_time) // 1000 > 0.2:
                     self.mole_die = True
                     self.mole.kill()
 
@@ -78,7 +75,7 @@ class MoleTheme():
                 if pg.mouse.get_pressed()[0] == 1 and self.clicked == False:
                     self.clicked = True
                     if pg.sprite.groupcollide(self.hammer_group, self.mole_group, False, True):
-                        self.score_board.score += 1  
+                        scoreboard.add_score()
                         self.mole_die = True
                         self.mole.kill()
 
@@ -86,7 +83,7 @@ class MoleTheme():
                     self.clicked = False
                 
         else:
-            print(f'Your score is: {self.score_board.score}')
+            print(f'Your score is: {scoreboard.score}')
             self.end_theme = True
 
         current = (pg.time.get_ticks() - self.start) // 1000 #convert tick to second, 1s = 1000ticks
@@ -94,12 +91,6 @@ class MoleTheme():
             print('Time Out!')
             self.game_over = True
 
-        # check event
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                shutil.rmtree(r'__pycache__')  # delete cache folder
-                pg.quit()
-                sys.exit()
         pass 
     
 class Background():
@@ -160,26 +151,25 @@ class Hole(pg.sprite.Sprite):
     def update(self):
         pass    
 
-class Scoreboard():
-    def __init__(self):
-        self.score = 0
-        pass
-
-    def draw(self):
-        self.text_surf = pg.font.Font.render(
-            FontType.FONT1, str(self.score), True, Colors.BLACK)
-        self.text_rect = self.text_surf.get_rect(
-            center=(ScreenWidth // 2, ScreenHeight // 14))
-        Screen.blit(self.text_surf, self.text_rect)
-        pass
-
-mole_theme = MoleTheme()
-mole_theme.prior_game_loop()
 '''
 TESTING HERE
 '''
 if __name__ == '__main__':
+    mole_theme = MoleTheme()
+    mole_theme.prior_game_loop()
+
     while True:
+        if mole_theme.end_theme == True:
+            pg.quit()
+            sys.exit()
         mole_theme.game_loop()
+
+        # check event
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                shutil.rmtree(r'__pycache__')  # delete cache folder
+                pg.quit()
+                sys.exit()
+                
         fps_clock()
         update_screen()
