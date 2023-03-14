@@ -2,7 +2,7 @@
     "highest-score": 0,
     "slot1": {
         "score": 0,
-        "current-round": 1,
+        "current-round": 0,
         "status": "SAVED"
     },
     "slot2": {

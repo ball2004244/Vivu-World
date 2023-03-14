@@ -3,7 +3,6 @@ import pygame as pg
 from pygame.locals import *
 sys.path.append('../Vivu-World')
 from setup import *
-from database.database import import_data
 from new_mission.general import *
 pg.init()
 
@@ -56,13 +55,15 @@ class Theme():
     def __init__(self) -> None:
         self.clicked = False
         self.end_theme = False
-        self.user_choice = None
+        self.choice_list = []
         pass
+
     def prior_game_loop(self) -> None:
         pass
 
     def game_loop(self) -> None:
         pass
+
     def draw(self) -> None:
         Screen.blit(self.image, self.rect)
         pass
@@ -137,20 +138,21 @@ class ThemeZero(Theme):
             if pg.sprite.groupcollide(self.start_group, self.cursor_group, False, False):                    
                 print('CLICK New Game')
                 self.end_theme = True
+                system.user_choice = 1
                 pass
 
             # click continue 
             if pg.sprite.groupcollide(self.continue_group, self.cursor_group, False, False): 
                 print('CLICK Continue')
                 self.end_theme = True
-                self.user_choice = 1
+                system.user_choice = 2
                 pass   
             
             # click settings
             if pg.sprite.groupcollide(self.settings_group, self.cursor_group, False, False):                    
                 print('CLICK Settings')
                 self.end_theme = True
-                self.user_choice = 2
+                system.user_choice = 3
                 pass 
             
             # click exit
@@ -162,6 +164,18 @@ class ThemeZero(Theme):
         if pg.mouse.get_pressed()[0] == 0:
             self.clicked = False
         pass
+
+class Newgame(Theme):
+    def __init__(self) -> None:
+        Theme.__init__(self)
+        pass
+
+    def prior_game_loop(self) -> None:
+        system.reset_data()
+        pass
+
+    def game_loop(self) -> None:
+        pass 
 
 class Setting(Theme):
     def __init__(self) -> None:
@@ -219,7 +233,7 @@ class SavingTheme(Theme):
             # click load game
             if pg.sprite.spritecollideany(self.cursor, self.saveslot_group):                    
                 print('CLICK Load Game')
-                self.process_data()
+                system.process_data()
 
                 # navigate to previous game stage
                 # self.end_theme = True
@@ -230,55 +244,26 @@ class SavingTheme(Theme):
         if pg.mouse.get_pressed()[0] == 0:
             self.clicked = False
         pass
-    def process_data(self) -> None:
-        ingame_data = import_data('database.json')
-
-        '''GENERAL DATA'''
-        highest_score = ingame_data['highest-score']
-
-        '''SPECIFIC DATA'''
-        # slot 1 
-        slot1_data = ingame_data['slot1']
-
-        if slot1_data['status'] == 'SAVED':
-            scoreboard.score = slot1_data['score']
-            scoreboard.round = slot1_data['current-round']
-
-        print(ingame_data)
-        pass 
 
     def load_previous_game(self) -> None:
         pass
-# class Theme():
-#     def __init__(self, theme_num):
-#         self.theme_num = theme_num
-#         self.image = pg.image.load(r'theme\\' + str(theme_num) + '.jpg')
-#         self.image = pg.transform.scale(
-#             self.image, (ScreenWidth, ScreenHeight))
-#         self.rect = self.image.get_rect(topleft=(0, 0))
-#         pass
 
-#     def draw(self):
-#         Screen.blit(self.image, self.rect)
-#         pass
-#     pass
-
-
+'''TESTING HERE'''
 if __name__ == '__main__':
     theme0 = ThemeZero()
     save_theme = SavingTheme()
-    theme_list = [ThemeZero(), SavingTheme(), Setting()]
-    theme_index = 0
+    system.choice_list = [ThemeZero(), Newgame(), SavingTheme(), Setting()]
 
-    current_theme = theme_list[theme_index]
+    current_theme = system.choice_list[0]
     current_theme.prior_game_loop()
     while True:
         Screen.fill(Colors.WHITE)
         current_theme.game_loop()
         
         if current_theme.end_theme == True:
-            if current_theme.user_choice != None:
-                current_theme = theme_list[current_theme.user_choice]
+            if system.user_choice != None:
+                current_theme = system.choice_list[system.user_choice]
+                system.user_choice = None
             current_theme.prior_game_loop()
 
         for event in pg.event.get():
@@ -286,5 +271,4 @@ if __name__ == '__main__':
                 quit_game()
         fps_clock()
         update_screen()
-    pass
     
