@@ -1,42 +1,53 @@
 # Import modules
 import pygame as pg
+import random
 from pygame.locals import *
 from setup import fps_clock, update_screen, quit_game, Screen, Colors
 from theme.theme_display import *
-from character.main_character import MainChar
-
+from new_mission.horse_shooting import HorseShootingTheme
+from new_mission.mole_in_hole import MoleTheme
+from new_mission.zombie_slap import ZombieSlapTheme
+from new_mission.flappybird import FlappyBirdTheme
+from new_mission.general import *
+from database.database import *
 pg.init()
 
 # Initialize variable for Main function
-theme0 = ThemeZero()
-theme_list = [theme0]
-theme_num = 0 #index of current theme
-player = MainChar()
+# current_theme = ThemeZero()
 
+game_list = [ZombieSlapTheme(), HorseShootingTheme(),
+             MoleTheme(), FlappyBirdTheme()]
+
+system.choice_list = [ThemeZero(), Newgame(), SavingTheme(), Setting()]
+prev_theme = None
+
+current_theme = ThemeZero()
+
+current_theme.prior_game_loop()
 # Main function
 while True:
-    current_theme = theme_list[theme_num]
     # draw
     Screen.fill(Colors.WHITE)
-    current_theme.draw()
+    current_theme.game_loop()
+    scoreboard.draw()
+    scoreboard.update() 
 
+    # when a player win a minigame -> change to next theme
+    if current_theme.end_theme == True: 
+        if system.user_choice != None:
+                current_theme = system.choice_list[system.user_choice]
+                system.user_choice = None
+        else:
+            while prev_theme == current_theme: # reroll until 2 consecutive tries are different
+                current_theme = random.choice(game_list)
+            prev_theme = current_theme
+            scoreboard.round += 1
+        current_theme.prior_game_loop()
+    
     # update
     for event in pg.event.get():
         if event.type == pg.QUIT:
+            system.save_game()
             quit_game()
-
-        if event.type == pg.MOUSEBUTTONUP:
-            if theme_num == 0 and theme0.start_button.check_click():
-                theme_num = theme0.new_game(theme_num)
-
-            theme0.update()
- 
-
-
-        if event.type == pg.KEYDOWN:
-            if event.key == pg.K_SPACE and theme_num != 0:
-                print('SPACE Pressed')
-                theme_num += 1
-                print('The current theme is ', theme_num)
     fps_clock()
     update_screen()
