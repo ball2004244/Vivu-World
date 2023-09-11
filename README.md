@@ -1,8 +1,5 @@
-**Developer Note**
-
-- sub-commit branch is for story development
-- sub-commit-2 branch is for code process
-- sub-commit-3 branch is for design
+# Vivu-World
+This is a visual novel game made with Pygame.
 
 **Story Overview**
 
